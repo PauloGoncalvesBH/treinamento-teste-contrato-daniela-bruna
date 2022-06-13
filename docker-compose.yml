@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  provider-test-contract:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: npm run test:contract:provider
+
+  consumer-test-contract:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: npm run test:contract:consumer
+    volumes:
+      - ./pacts:/app/pacts
+      - ./logs:/app/logs
