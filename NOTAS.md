@@ -1,6 +1,9 @@
 
 # Notas de treinamento
 
+- Garante a visibilidade dos times sobre as integrações.
+- Valida de forma assíncrona e com rápido feedack se determinado código pode ser enviado para algum ambiente (_prod, staging, release, etc_)
+
 ## Links
 
 - [Pact Nirvana](https://docs.pact.io/pact_nirvana)

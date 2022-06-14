@@ -4,27 +4,27 @@ const path = require("path")
 const { server, importData } = require("../../provider-clients-service/src/provider")
 
 describe("Clients Service Verification", () => {
-  before(() => {
+  before(() => { // (1) Inicia o servidor do provider localmente
     server.listen(3030, () =>{
       console.log('Servidor rodando na porta 3030');
     })
   })
 
   it("validates the expectations of Client Service", () => {
-    return new Verifier({
+    return new Verifier({ // (2) Configuração do endereço do provider, localização do contrato, setup, etc. Tudo necessário para execcutar o teste
         provider: 'clients-service',
         logLevel: 'INFO',
         verbose: false,
         providerBaseUrl: 'http://localhost:3030',
         pactUrls: ['/home/paulo/git/pact-daniela-bruna/pacts/frontend-clients-service.json'],
-        stateHandlers: {
+        stateHandlers: { // Aonde definimos o setup de cada interação que será feito localmente
           'eu tenho uma lista de clientes': () => {
             importData()
           }
         }
       })
-      .verifyProvider()
-      .then(output => {
+      .verifyProvider() // (3) Execução do teste, verificando o resultado retornado com o definido no contrato.
+      .then(output => { // (4) Exibição do resultado detalhado no terminal
         console.log('Pact Verification Complete!')
         console.log(output)
       })
