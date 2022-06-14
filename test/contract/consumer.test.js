@@ -25,7 +25,7 @@ describe('API Pact test - Integration between \'clients-service\' and \'frontend
   // Deve ser feito apenas uma vez por provedor que está testando 
   // e depois que todos os testes forem executados para esse par consumer-providerverifyProvider
 
-  describe("GET /clients", () => {
+  describe("GET /clients com lista de clientes", () => {
 
     const bodyResponse = {
       firstName: "Lisa",
@@ -67,3 +67,33 @@ describe('API Pact test - Integration between \'clients-service\' and \'frontend
     })
   })
 })
+
+/*
+Desafio
+
+Teste de contrato da rota GET /clients/id. Ex.: /clients/123
+
+Resposta:
+{
+  "firstName": "Lisa",
+  "lastName": "Simpson",
+  "age": 8,
+  "id": 1
+}
+
+No arquivo consumer.test.js
+1. Criar novo describe, duplicando GET /clients
+2. Fazer os ajustes: path e o corpo retornado
+
+rodar o teste do consumer para gerar o pact
+olhar o contrato
+
+No arquivo provider.test.js:
+1. criar novo stateHandler com essa ação (no lugar do importData()):
+  clientRepository.add({
+    firstName: 'Paulo',
+    lastName: 'Gonçalves',
+    age: 25,
+    id: 123,
+  })
+*/
