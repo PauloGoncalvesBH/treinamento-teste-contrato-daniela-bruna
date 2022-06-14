@@ -33,6 +33,9 @@ const importData = () => {
 // Get all clients
 server.get("/clients", (req, res) => {
   res.json(clientRepository.fetchAll())
+  // res.json({
+  //   primeiroNome:
+  // })
 })
 
 // Find client by ID

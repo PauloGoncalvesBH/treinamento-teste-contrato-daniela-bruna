@@ -1,1 +1,4 @@
 node_modules/
+
+# Arquivos do teste de contrato
+logs/

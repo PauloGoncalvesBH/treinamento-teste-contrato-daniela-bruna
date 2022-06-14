@@ -1,0 +1,48 @@
+{
+  "consumer": {
+    "name": "frontend"
+  },
+  "provider": {
+    "name": "clients-service"
+  },
+  "interactions": [
+    {
+      "description": "uma requisição de todos os clientes",
+      "providerState": "eu tenho uma lista de clientes",
+      "request": {
+        "method": "GET",
+        "path": "/clients",
+        "headers": {
+          "Accept": "application/json, text/plain, */*"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": [
+          {
+            "firstName": "Lisa",
+            "lastName": "Simpson",
+            "age": 8,
+            "id": 1
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "min": 1
+          },
+          "$.body[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}
