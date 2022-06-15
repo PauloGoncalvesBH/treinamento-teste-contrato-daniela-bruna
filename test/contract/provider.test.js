@@ -1,7 +1,7 @@
 const { Verifier } = require('@pact-foundation/pact')
 const path = require("path")
 
-const { server, importData } = require("../../provider-clients-service/src/provider")
+const { server, importData, clientRepository } = require("../../provider-clients-service/src/provider")
 
 describe("Clients Service Verification", () => {
   before(() => { // (1) Inicia o servidor do provider localmente
@@ -16,10 +16,18 @@ describe("Clients Service Verification", () => {
         logLevel: 'INFO',
         verbose: false,
         providerBaseUrl: 'http://localhost:3030',
-        pactUrls: ['/home/paulo/git/pact-daniela-bruna/pacts/frontend-clients-service.json'],
+        pactUrls: ['/app/pacts/frontend-clients-service.json'],
         stateHandlers: { // Aonde definimos o setup de cada interação que será feito localmente
           'eu tenho uma lista de clientes': () => {
             importData()
+          },
+          "eu tenho um cliente específico": () => {
+            clientRepository.add({
+              firstName: 'Lisa',
+              lastName: 'Simpson',
+              age: 8,
+              id: 1
+            })
           }
         }
       })

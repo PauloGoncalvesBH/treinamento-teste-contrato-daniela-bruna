@@ -1,0 +1,27 @@
+name: Integração contínua do Consumer
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  teste-de-contrato-do-consumer:
+    runs-on: ubuntu-18.04
+    name: Execução do teste de contrato do consumer
+    steps:
+      - name: Clone do repositório
+        uses: actions/checkout@v3
+        - run: docker compose run --rm consumer-test-contract
+      - name: Publicar o contrato no pact-broker
+        run: |
+          docker run --rm \
+            -w /app \
+            -v ${PWD}/pacts:/app/pacts \
+            -e PACT_BROKER_BASE_URL=https://danielafdc.pactflow.io \
+            -e PACT_BROKER_USERNAME=${{ secrets.PACT_BROKER_USERNAME }} \
+            -e PACT_BROKER_PASSWORD=${{ secrets.PACT_BROKER_PASSWORD }} \
+            pactfoundation/pact-cli:latest \
+            publish \
+            /app/pacts \
+            --consumer-app-version ${{ github.sha }} \
+            --tag-with-git-branch

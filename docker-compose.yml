@@ -6,6 +6,8 @@ services:
       context: .
       dockerfile: Dockerfile
     command: npm run test:contract:provider
+    volumes:
+      - ./test/contract:/app/test/contract
 
   consumer-test-contract:
     build:

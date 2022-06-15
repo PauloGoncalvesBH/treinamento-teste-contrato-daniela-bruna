@@ -8,7 +8,7 @@ const { Pact, Matchers } = require("@pact-foundation/pact")
 
 // (1) Cria o objeto do Pact para representar o provider
 const mockProvider = new Pact({
-  port: 8082,
+  port: 8089,
   logLevel: 'INFO',
   consumer: 'frontend', // essa é a aplicação atual
   provider: 'clients-service' // é a aplicação que consumimos, validando integração entre frontend e clients-service
@@ -58,10 +58,49 @@ describe('API Pact test - Integration between \'clients-service\' and \'frontend
     // (4) Executa requisição em cima do mock
     // Sem requisição em cima da interação o arquivo de pact não é gerado
     it("retornando o body, header e statusCode corretos", async () => {
-      const response = await axios.get('http://localhost:8082/clients') // a porta da requisição tem que ser a mesma porta definida no mockProvider
+      const response = await axios.get('http://localhost:8089/clients') // a porta da requisição tem que ser a mesma porta definida no mockProvider
 
       // Validamos toda a saída de acordo com o que definimos na interação para ter certeza que foi implementado corretamente
       expect(response.data).to.deep.equal([bodyResponse])
+      expect(response.status).to.equal(200)
+      expect(response.headers['content-type']).to.equal("application/json; charset=utf-8")
+    })
+  })
+
+  describe("GET /clients/id", () => {
+
+    const bodyResponse = {
+      firstName: "Lisa",
+      lastName: "Simpson",
+      age: 8,
+      id: 1
+    }
+
+    before(async () => {
+      await mockProvider.addInteraction({
+        state: "eu tenho um cliente específico",
+        uponReceiving: "uma requisição do cliente específico 1",
+        withRequest: {
+          method: "GET",
+          path: "/clients/1",
+          headers: {
+            Accept: "application/json, text/plain, */*",
+          },
+        },
+        willRespondWith: {
+          status: 200,
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          body: Matchers.like(bodyResponse)
+        }
+      })
+    })
+
+    it("validar se a resposta está correta", async () => {
+      const response = await axios.get("http://localhost:8089/clients/1")
+
+      expect(response.data).to.deep.equal(bodyResponse)
       expect(response.status).to.equal(200)
       expect(response.headers['content-type']).to.equal("application/json; charset=utf-8")
     })
