@@ -1,0 +1,50 @@
+
+name: Integração contínua do Consumer
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  teste-de-contrato-do-consumer:
+    runs-on: ubuntu-18.04
+    name: Execução do teste de contrato do consumer
+    steps:
+      - name: Clone do repositório
+        uses: actions/checkout@v3
+      - run: docker compose run --rm consumer-test-contract
+      - name: Publicar o contrato no pact-broker
+        run: |
+          docker run --rm \
+            -w /app \
+            -v ${PWD}:/app \
+            -e PACT_BROKER_BASE_URL=https://paulogoncalves.pactflow.io \
+            -e PACT_BROKER_USERNAME=${{ secrets.PACT_BROKER_USERNAME }} \
+            -e PACT_BROKER_PASSWORD=${{ secrets.PACT_BROKER_PASSWORD }} \
+            -e GIT_CEILING_DIRECTORIES=/app \
+            pactfoundation/pact-cli:0.50.0.14 \
+            publish \
+            /app/pacts \
+            --consumer-app-version ${{ github.sha }} \
+            --tag-with-git-branch
+
+
+
+# - gatilho> rodar a cada push
+# - clone do repositório - checkout
+# - rodar > docker compose run --rm consumer-test-contract
+# - publicar o contrato > 
+
+
+# docker run --rm \
+#   -w /app \
+#   -v ${PWD}/pacts:/app/pacts \
+#   -e PACT_BROKER_BASE_URL=https://AJUSTAR.pactflow.io \
+#   -e PACT_BROKER_USERNAME=AJUSTAR_USUARIO \
+#   -e PACT_BROKER_PASSWORD=AJUSTAR_SENHA \
+#   pactfoundation/pact-cli:latest \
+#   publish \
+#   /app/pacts \
+#   --consumer-app-version 1234 \
+#   --tag-with-git-branch
+
