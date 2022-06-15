@@ -6,6 +6,9 @@ services:
       context: .
       dockerfile: Dockerfile
     command: npm run test:contract:provider
+    environment:
+      - PACT_BROKER_TOKEN
+      - CI
     volumes:
       - ./test/contract:/app/test/contract
 

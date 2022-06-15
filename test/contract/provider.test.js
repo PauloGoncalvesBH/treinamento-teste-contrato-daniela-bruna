@@ -3,6 +3,16 @@ const path = require("path")
 
 const { server, importData, clientRepository } = require("../../provider-clients-service/src/provider")
 
+const currentGitHash = require('child_process')
+  .execSync('git rev-parse HEAD')
+  .toString()
+  .trim()
+
+const currentGitBranch = require('child_process')
+  .execSync('git branch --show-current')
+  .toString()
+  .trim()
+
 describe("Clients Service Verification", () => {
   before(() => { // (1) Inicia o servidor do provider localmente
     server.listen(3030, () =>{
@@ -16,7 +26,21 @@ describe("Clients Service Verification", () => {
         logLevel: 'INFO',
         verbose: false,
         providerBaseUrl: 'http://localhost:3030',
-        pactUrls: ['/app/pacts/frontend-clients-service.json'],
+        pactBrokerToken: process.env.PACT_BROKER_TOKEN,
+        pactBrokerUrl: 'https://danielafdc.pactflow.io',
+        providerVersionTags: currentGitBranch,//branch atual
+        providerVersion: currentGitHash,//hash do commit
+        publishVerificationResult: process.env.CI === 'true',
+        consumerVersionSelectors: [
+          {
+            tag: 'daniela',
+            latest: true
+          }
+        ],
+        //pactUrls: ['/app/pacts/frontend-clients-service.json'],
+        beforeEach: () => {
+          clientRepository.clear()
+        },
         stateHandlers: { // Aonde definimos o setup de cada interação que será feito localmente
           'eu tenho uma lista de clientes': () => {
             importData()

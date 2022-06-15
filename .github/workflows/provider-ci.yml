@@ -1,0 +1,16 @@
+name: Integração contínua do provider
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  teste-de-contrato-do-provider:
+    runs-on: ubuntu-18.04
+    name: Execução do teste de contrato do provider
+    steps:
+      - name: Clone do repositório
+        uses: actions/checkout@v3
+      - run: docker compose run --rm provider-test-contract
+        env:
+          PACT_BROKER_TOKEN: ${{ secrets.PACT_BROKER_TOKEN}}
