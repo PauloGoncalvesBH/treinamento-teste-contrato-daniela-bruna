@@ -18,9 +18,8 @@ jobs:
             -w /app \
             -v ${PWD}:/app \
             -e PACT_BROKER_BASE_URL=https://danielafdc.pactflow.io \
-            -e PACT_BROKER_USERNAME=${{ secrets.PACT_BROKER_USERNAME }} \
-            -e PACT_BROKER_PASSWORD=${{ secrets.PACT_BROKER_PASSWORD }} \
-            pactfoundation/pact-cli:latest \
+            -e PACT_BROKER_TOKEN=${{ secrets.PACT_BROKER_TOKEN }} \
+            pactfoundation/pact-cli:0.50.0.14 \
             publish \
             /app/pacts \
             --consumer-app-version ${{ github.sha }} \
