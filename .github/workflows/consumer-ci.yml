@@ -16,7 +16,7 @@ jobs:
         run: |
           docker run --rm \
             -w /app \
-            -v ${PWD}/pacts:/app/pacts \
+            -v ${PWD}:/app \
             -e PACT_BROKER_BASE_URL=https://danielafdc.pactflow.io \
             -e PACT_BROKER_USERNAME=${{ secrets.PACT_BROKER_USERNAME }} \
             -e PACT_BROKER_PASSWORD=${{ secrets.PACT_BROKER_PASSWORD }} \
