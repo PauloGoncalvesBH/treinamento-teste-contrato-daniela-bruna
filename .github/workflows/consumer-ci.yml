@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Clone do repositório
         uses: actions/checkout@v3
-        - run: docker compose run --rm consumer-test-contract
+      - run: docker compose run --rm consumer-test-contract
       - name: Publicar o contrato no pact-broker
         run: |
           docker run --rm \
