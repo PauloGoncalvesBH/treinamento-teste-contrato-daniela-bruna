@@ -33,7 +33,7 @@ describe("Clients Service Verification", () => {
         publishVerificationResult: process.env.CI === 'true',
         consumerVersionSelectors: [
           {
-            tag: 'pact-daniela-bruna',
+            tag: 'daniela',
             latest: true
           }
         ],
