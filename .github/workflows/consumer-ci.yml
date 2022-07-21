@@ -17,7 +17,7 @@ jobs:
           docker run --rm \
             -w /app \
             -v ${PWD}:/app \
-            -e PACT_BROKER_BASE_URL=https://danielafdc.pactflow.io \
+            -e PACT_BROKER_BASE_URL=https://paulogoncalves.pactflow.io \
             -e PACT_BROKER_TOKEN=${{ secrets.PACT_BROKER_TOKEN }} \
             pactfoundation/pact-cli:0.50.0.14 \
             publish \
