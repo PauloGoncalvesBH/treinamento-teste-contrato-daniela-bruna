@@ -26,7 +26,7 @@ describe("Clients Service Verification", () => {
         logLevel: 'INFO',
         verbose: false,
         providerBaseUrl: 'http://localhost:3030',
-        pactBrokerToken: '8sRF-XWVFpfLRpLp2B-lLw',
+        pactBrokerToken: process.env.PACT_BROKER_TOKEN,
         pactBrokerUrl: 'https://paulogoncalves.pactflow.io',
         providerVersionTags: currentGitBranch,//branch atual
         providerVersion: currentGitHash,//hash do commit
