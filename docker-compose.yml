@@ -3,20 +3,21 @@ version: '3.8'
 services:
   provider-test-contract:
     build:
-      context: .
+      context: provider-clients-service
       dockerfile: Dockerfile
-    command: npm run test:contract:provider
+    command: npm run test:contract
     environment:
       - PACT_BROKER_TOKEN
       - CI
     volumes:
-      - ./test/contract:/app/test/contract
+      - ./provider-clients-service/test:/app/test
+      - ./.git:/app/.git
 
   consumer-test-contract:
     build:
-      context: .
+      context: consumer-frontend
       dockerfile: Dockerfile
-    command: npm run test:contract:consumer
+    command: npm run test:contract
     volumes:
       - ./pacts:/app/pacts
       - ./logs:/app/logs

@@ -8,7 +8,8 @@
     "url": "https://github.com/PauloGoncalvesBH/sample-teste-de-contrato.git"
   },
   "scripts": {
-    "start": "node ./src/consumerService.js"
+    "start": "node ./src/consumerService.js",
+    "test:contract": "mocha ./test/pact.test.js --timeout 60000 --exit"
   },
   "dependencies": {
     "axios": "0.21.1",

@@ -1,7 +1,7 @@
 const { Verifier } = require('@pact-foundation/pact')
 const path = require("path")
 
-const { server, importData, clientRepository } = require("../../provider-clients-service/src/provider")
+const { server, importData, clientRepository } = require("../src/provider")
 
 const currentGitHash = require('child_process')
   .execSync('git rev-parse HEAD')
@@ -26,14 +26,14 @@ describe("Clients Service Verification", () => {
         logLevel: 'INFO',
         verbose: false,
         providerBaseUrl: 'http://localhost:3030',
-        pactBrokerToken: process.env.PACT_BROKER_TOKEN,
-        pactBrokerUrl: 'https://danielafdc.pactflow.io',
+        pactBrokerToken: '8sRF-XWVFpfLRpLp2B-lLw',
+        pactBrokerUrl: 'https://paulogoncalves.pactflow.io',
         providerVersionTags: currentGitBranch,//branch atual
         providerVersion: currentGitHash,//hash do commit
         publishVerificationResult: process.env.CI === 'true',
         consumerVersionSelectors: [
           {
-            tag: 'daniela',
+            tag: 'pact-daniela-bruna',
             latest: true
           }
         ],
